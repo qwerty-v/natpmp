@@ -12,7 +12,7 @@ struct nat_pmp_req {
     uint32_t lifetime; // in seconds
 };
 
-struct nat_pmp_resp_map_hdr {
+struct nat_pmp_resp_hdr {
     uint8_t ver;
     uint8_t opcode;
     uint16_t result_code;
@@ -20,14 +20,14 @@ struct nat_pmp_resp_map_hdr {
 };
 
 struct nat_pmp_resp_map {
-    struct nat_pmp_resp_map_hdr hdr;
+    struct nat_pmp_resp_hdr hdr;
     uint16_t internal_port;
     uint16_t external_port;
     uint32_t lifetime; // in seconds
 };
 
 struct nat_pmp_resp_ext {
-    struct nat_pmp_resp_map_hdr hdr;
+    struct nat_pmp_resp_hdr hdr;
     uint32_t ip;
 };
 

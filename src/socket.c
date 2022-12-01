@@ -14,7 +14,7 @@ int create_socket(const char *gw, int port) {
     gw_addr.sin_port = htons(port);
     gw_addr.sin_addr.s_addr = inet_addr(gw);
 
-    if (connect(sock, (const struct sockaddr *) &gw_addr, sizeof(gw)) < 0) {
+    if (connect(sock, (const struct sockaddr *) &gw_addr, sizeof(gw_addr)) < 0) {
         return -1;
     }
 

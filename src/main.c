@@ -7,7 +7,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-void print_result(struct nat_pmp_resp_map_hdr hdr) {
+void print_result(struct nat_pmp_resp_hdr hdr) {
     char *status = "SUCCESS";
     if (hdr.result_code != 0) {
         status = "ERROR";

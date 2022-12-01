@@ -1,7 +1,6 @@
 #include "nat_pmp.h"
 
 #include <netinet/in.h>
-#include <stddef.h>
 #include <stdlib.h>
 
 int nat_pmp_add_port_mapping(int sock, uint16_t internal_port, uint16_t external_port,
@@ -18,12 +17,12 @@ int nat_pmp_add_port_mapping(int sock, uint16_t internal_port, uint16_t external
         return -1;
     }
 
-    int n = (int) recv(sock, &resp, sizeof(struct nat_pmp_resp_map), 0);
+    int n = (int) recv(sock, resp, sizeof(struct nat_pmp_resp_map), 0);
     if (n < 0) {
         return -1;
     }
 
-    return 0;
+    return n;
 }
 
 int nat_pmp_delete_port_mapping(int sock, uint16_t internal_port, struct nat_pmp_resp_map* resp) {
@@ -35,16 +34,16 @@ int nat_pmp_delete_port_mapping(int sock, uint16_t internal_port, struct nat_pmp
     req.external_port = 0;
     req.lifetime = 0;
 
-    if (send(sock, &req, sizeof(req), 0)) {
+    if (send(sock, &req, sizeof(req), 0) < 0) {
         return -1;
     }
 
-    int n = (int) recv(sock, &resp, sizeof(struct nat_pmp_resp_map), 0);
+    int n = (int) recv(sock, resp, sizeof(struct nat_pmp_resp_map), 0);
     if (n < 0) {
         return -1;
     }
 
-    return 0;
+    return n;
 }
 
 int nat_pmp_show_external_ip(int sock, struct nat_pmp_resp_ext *resp) {
@@ -56,10 +55,10 @@ int nat_pmp_show_external_ip(int sock, struct nat_pmp_resp_ext *resp) {
         return -1;
     }
 
-    int n = (int) recv(sock, &resp, sizeof(struct nat_pmp_resp_ext), 0);
+    int n = (int) recv(sock, resp, sizeof(struct nat_pmp_resp_ext), 0);
     if (n < 0) {
         return -1;
     }
 
-    return 0;
+    return n;
 }
