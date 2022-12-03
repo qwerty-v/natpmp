@@ -35,7 +35,7 @@ The following parameters may be set:
         Gateway port. Default is 5351
 
 <b>-l</b> <u>lifetime</u>
-        Mapping lifetime in seconds
+        Mapping lifetime in seconds. Default is one day
 </pre>
 
 ## Examples
