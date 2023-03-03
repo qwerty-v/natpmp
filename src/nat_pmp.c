@@ -1,10 +1,10 @@
 #include "nat_pmp.h"
+#include "socket.h"
 
-#include <netinet/in.h>
 #include <stdlib.h>
 
-int nat_pmp_add_port_mapping(int sock, uint16_t internal_port, uint16_t external_port,
-                             uint32_t lifetime_in_secs, struct nat_pmp_resp_map* resp) {
+ssize_t nat_pmp_add_port_mapping(int sock, uint16_t internal_port, uint16_t external_port,
+                                 uint32_t lifetime_in_secs, struct nat_pmp_resp_map *resp) {
     struct nat_pmp_req req;
     req.ver = 0;
     req.opcode = 1;
@@ -13,19 +13,13 @@ int nat_pmp_add_port_mapping(int sock, uint16_t internal_port, uint16_t external
     req.external_port = htons(external_port);
     req.lifetime = htonl(lifetime_in_secs);
 
-    if (send(sock, &req, sizeof(req), 0) < 0) {
-        return -1;
-    }
-
-    int n = (int) recv(sock, resp, sizeof(struct nat_pmp_resp_map), 0);
-    if (n < 0) {
-        return -1;
-    }
-
-    return n;
+    return socket_send_and_recv(sock,
+                                &req, sizeof(req),
+                                resp, sizeof(struct nat_pmp_resp_map)
+    );
 }
 
-int nat_pmp_delete_port_mapping(int sock, uint16_t internal_port, struct nat_pmp_resp_map* resp) {
+ssize_t nat_pmp_delete_port_mapping(int sock, uint16_t internal_port, struct nat_pmp_resp_map *resp) {
     struct nat_pmp_req req;
     req.ver = 0;
     req.opcode = 1;
@@ -34,31 +28,19 @@ int nat_pmp_delete_port_mapping(int sock, uint16_t internal_port, struct nat_pmp
     req.external_port = 0;
     req.lifetime = 0;
 
-    if (send(sock, &req, sizeof(req), 0) < 0) {
-        return -1;
-    }
-
-    int n = (int) recv(sock, resp, sizeof(struct nat_pmp_resp_map), 0);
-    if (n < 0) {
-        return -1;
-    }
-
-    return n;
+    return socket_send_and_recv(sock,
+                                &req, sizeof(req),
+                                resp, sizeof(struct nat_pmp_resp_map)
+    );
 }
 
-int nat_pmp_show_external_ip(int sock, struct nat_pmp_resp_ext *resp) {
+ssize_t nat_pmp_show_external_ip(int sock, struct nat_pmp_resp_ext *resp) {
     struct nat_pmp_req req;
     req.ver = 0;
     req.opcode = 0;
 
-    if (send(sock, &req, sizeof(req.ver) + sizeof(req.opcode), 0) < 0) {
-        return -1;
-    }
-
-    int n = (int) recv(sock, resp, sizeof(struct nat_pmp_resp_ext), 0);
-    if (n < 0) {
-        return -1;
-    }
-
-    return n;
+    return socket_send_and_recv(sock,
+                                &req, sizeof(req.ver) + sizeof(req.opcode), // send only two fields
+                                resp, sizeof(struct nat_pmp_resp_ext)
+    );
 }

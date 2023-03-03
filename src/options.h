@@ -2,14 +2,14 @@
 #ifndef NAT_PMP_OPTIONS_H
 #define NAT_PMP_OPTIONS_H
 
-enum action {
+enum actions {
     ACTION_ADD_MAPPING,
     ACTION_DELETE_MAPPING,
     ACTION_SHOW_EXTERNAL_IP
 };
 
 struct options {
-    enum action act;
+    enum actions act;
 
     char *gateway;
     int gw_port;

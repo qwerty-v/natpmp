@@ -2,6 +2,7 @@
 #define NAT_PMP_NAT_PMP_H
 
 #include <stdint.h>
+#include <sys/types.h>
 
 struct nat_pmp_req {
     uint8_t ver;
@@ -31,10 +32,10 @@ struct nat_pmp_resp_ext {
     uint32_t ip;
 };
 
-int nat_pmp_add_port_mapping(int, uint16_t, uint16_t, uint32_t, struct nat_pmp_resp_map *);
+ssize_t nat_pmp_add_port_mapping(int, uint16_t, uint16_t, uint32_t, struct nat_pmp_resp_map *);
 
-int nat_pmp_delete_port_mapping(int, uint16_t, struct nat_pmp_resp_map *);
+ssize_t nat_pmp_delete_port_mapping(int, uint16_t, struct nat_pmp_resp_map *);
 
-int nat_pmp_show_external_ip(int, struct nat_pmp_resp_ext *);
+ssize_t nat_pmp_show_external_ip(int, struct nat_pmp_resp_ext *);
 
 #endif //NAT_PMP_NAT_PMP_H

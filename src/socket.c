@@ -20,3 +20,12 @@ int create_socket(const char *gw, int port) {
 
     return sock;
 }
+
+ssize_t socket_send_and_recv(int sock, void* send_buf, size_t send_len, void* recv_buf, size_t recv_len) {
+    ssize_t send_result = send(sock, send_buf, send_len, 0);
+    if (send_result < 0) {
+        return send_result;
+    }
+
+    return recv(sock, recv_buf, recv_len, 0);
+}
